@@ -49,3 +49,39 @@ In Jupyter, use **Kernel -> Restart Kernel and Run All Cells** to verify executi
 
 - The notebook is designed to run in a standard Python 3 environment.
 - All quantum simulations are local and use Aer simulators.
+
+## Run & Verify (recommended)
+
+Follow these commands locally to reproduce the notebook results.
+
+1. Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Install pinned dependencies:
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+3. Execute the notebook (runs all cells and verifies execution):
+
+```bash
+jupyter nbconvert --to notebook --execute problems.ipynb --ExecutePreprocessor.timeout=120
+```
+
+Notes:
+- To avoid committing outputs, clear them in-place before committing:
+
+	```bash
+	jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace problems.ipynb
+	```
+- CI is configured to execute the notebook on push/PR. The notebook contains an emulator fallback path when Qiskit is not available, so the repository is runnable without a local Qiskit installation. If you want to run the Aer simulator locally, install Qiskit with:
+
+	```bash
+	pip install qiskit qiskit-aer
+	```
